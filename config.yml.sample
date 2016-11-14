@@ -1,0 +1,15 @@
+:optimizely_tokens:
+  :sample: <optimizely_token_here>
+:slack_tokens:
+  :sample: <slack_token_here>
+:target_projects:
+  - :project_name: <project_name_here_if_you_want_filtering>
+    :optimizely_token_ref: :sample
+    :slack_token_ref: :sample
+    :goal_status_icons:
+      winner: ☀
+      loser: ☂
+      inconclusive: ☁
+      baseline: ''
+    :channel: <slack_channel_name_here>
+    :icon_emoji: ':triangular_flag_on_post:'
