@@ -1,0 +1,37 @@
+{
+  "username":"Optimizely通知(<%=e.project.project_name%>)",
+  "as_user": false,
+  "channel": "<%=e.config[:channel]%>",
+  "icon_emoji":"<%=e.config[:icon_emoji]%>",
+  "text": "*実験名: <<%=e.experiment['shareable_results_link']%>|<%=e.experiment['description']%>>*",
+  "mrkdwn": true,
+  "attachments": [
+    {
+      "title": "開始日",
+      "text": "<%="#{e.experiment['last_modified'].to_date} (#{(Date.current - e.experiment['last_modified'].to_date).to_i}日経過)"%>"
+    },
+    {
+      "title": "対象URL",
+      "text": "<%=Helper.url_conditions(e.experiment)%>"
+    }<% if e.experiment['details'].present? %>,
+    {
+      "title": "詳細",
+      "text": "<%=e.experiment['details']%>"
+    }<% end %>,
+    <% e.stats.each_with_index do |(goal_id, t), idx_g| %>
+    {
+      "title": "目標: <%=e.goal_name(goal_id)%>",
+      "fields": [
+        <% Helper.sort(t).each_with_index do |(variation_id, s), idx_v| %>
+          {
+            "title": "<%=e.variation_name(variation_id)%><%=e.config[:goal_status_icons][s['status']]%>",
+            "value": "<%="#{s['conversion_rate'].present? ? "CVR %.2f%%" % (s['conversion_rate'] * 100) : ''}#{s['status'] != 'baseline' ? "(有意性確定まで#{s['visitors_until_statistically_significant']}人)" : ''}"%>",
+            "short": true
+          }<% if idx_v < t.size - 1 %>,<% end %>
+          <% end %>
+        ],
+      "color": "<%=e.config[:goal_status_colors][Helper.judge(t)]%>"
+    }<% if idx_g < e.stats.size - 1 %>,<% end %>
+    <% end %>
+  ]
+}
