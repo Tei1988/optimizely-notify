@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/MartijnSch/optimizely-gem
-  revision: 841787a7cbbe7910f76a5d0a8e896a66c41b1fdc
+  revision: b92c6290ebbcc5684f68bf22d0307c28d90a49e5
   specs:
     optimizely (1.2.2)
       json (~> 1.8.3)
@@ -15,32 +15,45 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    addressable (2.4.0)
-    concurrent-ruby (1.0.2)
-    domain_name (0.5.20160826)
+    addressable (2.5.0)
+      public_suffix (~> 2.0, >= 2.0.2)
+    axiom-types (0.1.1)
+      descendants_tracker (~> 0.0.4)
+      ice_nine (~> 0.11.0)
+      thread_safe (~> 0.3, >= 0.3.1)
+    coercible (1.0.0)
+      descendants_tracker (~> 0.0.1)
+    concurrent-ruby (1.0.3)
+    descendants_tracker (0.0.4)
+      thread_safe (~> 0.3, >= 0.3.1)
+    domain_name (0.5.20161129)
       unf (>= 0.0.5, < 1.0.0)
-    eventmachine (1.2.0.1)
+    equalizer (0.0.11)
+    eventmachine (1.2.1)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
-    faraday_middleware (0.10.0)
-      faraday (>= 0.7.4, < 0.10)
+    faraday_middleware (0.10.1)
+      faraday (>= 0.7.4, < 1.0)
     faye-websocket (0.9.2)
       eventmachine (>= 0.12.0)
       websocket-driver (>= 0.5.1)
-    http-cookie (1.0.2)
+    http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.7.0)
+    ice_nine (0.11.2)
     json (1.8.3)
     mime-types (2.99.3)
-    minitest (5.9.1)
+    minitest (5.10.1)
     multi_json (1.12.1)
     multipart-post (2.0.0)
     netrc (0.11.0)
     oauth (0.5.1)
+    public_suffix (2.0.4)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    retryable (2.0.4)
     ruby-trello (1.5.1)
       activemodel (>= 3.2.0)
       addressable (~> 2.3)
@@ -52,12 +65,18 @@ GEM
       faraday_middleware (~> 0.8)
       faye-websocket (~> 0.9.2)
       multi_json (~> 1.0, >= 1.0.3)
+    thor (0.19.4)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
+    virtus (1.0.5)
+      axiom-types (~> 0.1)
+      coercible (~> 1.0)
+      descendants_tracker (~> 0.0, >= 0.0.3)
+      equalizer (~> 0.0, >= 0.0.9)
     websocket-driver (0.6.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
@@ -67,8 +86,11 @@ PLATFORMS
 
 DEPENDENCIES
   optimizely!
+  retryable!
   ruby-trello!
   slack-api!
+  thor!
+  virtus!
 
 BUNDLED WITH
    1.13.6
