@@ -8,8 +8,6 @@ require 'yaml'
 require 'erb'
 require 'thor'
 
-require 'pp'
-
 class OptimizelyExperiment
   include Virtus.model
 
@@ -72,20 +70,17 @@ class OptimizelyNotifyCLI < Thor
     config[:target_projects].each do |target_project|
       Slack.configure { |c| c.token = config[:slack_tokens][target_project[:slack_token_ref]] }
       optimizely = Optimizely.new(api_token: config[:optimizely_tokens][target_project[:optimizely_token_ref]])
-      Retryable.retryable(tries: 3, sleep: 5) do
-        projects(optimizely, target_project).each do |project|
-          Retryable.retryable(tries: 3, sleep: 5) do
-            optimizely.experiments(project.id).select { |e| e['status'] == 'Running' }
-            .each do |experiment|
-              Retryable.retryable(tries: 3, sleep: 5) do
-                e = OptimizelyExperiment.new(optimizely: optimizely, config: target_project, project: project, experiment: experiment)
-                object = JSON.parse(ERB.new(File.read("templates/#{target_project[:template_filepath]}"), nil, '-').result(binding), symbolize_names: true)
-                object[:attachments] = object[:attachments].to_json
-                Slack::Client.new.tap do |client|
-                  pp client.chat_postMessage(object)
-                end
-              end
+      projects(optimizely, target_project).each do |project|
+        optimizely.experiments(project.id).select { |e| e['status'] == 'Running' }
+        .each do |experiment|
+          Retryable.retryable(tries: 3, sleep: 60) do
+            e = OptimizelyExperiment.new(optimizely: optimizely, config: target_project, project: project, experiment: experiment)
+            object = JSON.parse(ERB.new(File.read("templates/#{target_project[:template_filepath]}"), nil, '-').result(binding), symbolize_names: true)
+            object[:attachments] = object[:attachments].to_json
+            Slack::Client.new.tap do |client|
+              client.chat_postMessage(object)
             end
+            sleep(5)
           end
         end
       end
